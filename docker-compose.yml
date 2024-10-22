@@ -1,0 +1,38 @@
+version: "3.8"
+volumes:
+  db-store:
+services:
+  app:
+    container_name: basis-php-apache
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    volumes:
+    - ./backend:/var/www/html/
+    ports:
+    - 6060:80
+    depends_on:
+    - db
+  db:
+    container_name: basis-mysql
+    build:
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile
+    volumes:
+      - db-store:/var/www/mysql
+    ports:
+    - 9000:3306
+    #デフォルトログインユーザーの指定
+    user: mysql
+    environment:
+      MYSQL_DATABASE: basis_database
+      MYSQL_USER: trainuser
+      MYSQL_PASSWORD: trainpass
+      MYSQL_ROOT_PASSWORD: rootpass
+  adminer:
+    image: adminer:latest
+    container_name: basis-adminer
+    ports:
+    - 10000:8080
+    depends_on:
+    - db

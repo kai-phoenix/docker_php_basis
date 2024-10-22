@@ -1,0 +1,8 @@
+#RewriteEngine有効化
+RewriteEngine On
+
+#RewriteBaseを/に設定
+RewriteBase /
+
+#RewriteRuleでindex.phpを/に置換する(302リダイレクトする)
+RewriteRule ^index\.(php|html) / [R=302,L]
